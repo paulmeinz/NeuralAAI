@@ -7,7 +7,8 @@ import string
 files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
 
 pat = re.compile(".docx")
-slt = re.compile("[ ,.-;:$&!]")
+slt = re.compile("[ ,.-;:$&!-]")
+grp = re.compile("\((.*?)\)|\{(.*?)\}|\[(.*?)\]")
 
 # Grab the files with the docx extension
 
@@ -28,6 +29,7 @@ for i in docs:
                 x = k.text
                 text += x
     text = text.replace(u"\u2019", "").replace(u"\u2013", "").replace(u"\u2018", "")
-    text = slt.split(text)
+    text = re.sub(grp, "", text)
+    text = slt.split(text)      
     print(text)
 
