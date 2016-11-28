@@ -1,10 +1,25 @@
 import re
 import docx
+import os
 
 
-doc = docx.Document('031.docx')
-x = len(doc.paragraphs)
+files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
 
-for i in doc.paragraphs:
-  for z in i.runs:
-    print z.bold, z.italic, z.underline
+pat = re.compile(".docx")
+
+# Grab the files with the docx extension
+
+docs = []
+
+for i in files:
+    if pat.search(i) != None:
+        docs.append(i)
+
+# Read the files
+
+for i in docs:
+    doc = docx.Document('files/' + i)
+    for j in doc.paragraphs:
+        for k in j.runs:
+            print k.bold, k.italic, k.underline # Determine fonts
+
