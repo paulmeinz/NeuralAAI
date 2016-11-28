@@ -30,6 +30,7 @@ for i in docs:
                 text += x
     text = text.replace(u"\u2019", "").replace(u"\u2013", "").replace(u"\u2018", "")
     text = re.sub(grp, "", text)
-    text = slt.split(text)      
-    print(text)
+    text = slt.split(text)
+    newtext = [i for i in text if i != '']      
+    print(newtext)
 
