@@ -20,14 +20,14 @@ for i in files:
 # Read the files
 
 for i in docs:
-    text = []
+    text = ''
     doc = docx.Document('files/' + i)
     for j in doc.paragraphs:
         for k in j.runs:
             if k.bold == None and k.italic == None and k.underline == None:
                 x = k.text
-                x = x.replace(u"\u2019", "").replace(u"\u2013", "").replace(u"\u2018", "")
-                x = slt.split(x)
-                text.extend(x)
+                text += x
+    text = text.replace(u"\u2019", "").replace(u"\u2013", "").replace(u"\u2018", "")
+    text = slt.split(text)
     print(text)
 
