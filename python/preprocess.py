@@ -2,13 +2,17 @@ import re
 import docx
 import os
 import string
+import csv
 
 
 files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
 
-pat = re.compile(".docx")
-slt = re.compile("[ ,.-;:$&!-]")
-grp = re.compile("\((.*?)\)|\{(.*?)\}|\[(.*?)\]")
+pat = re.compile(".doc")
+slt = re.compile('''[-&$#/~`?;:<> ,}{.-;:$&!)(]|\]|\[''')
+grp = re.compile("\(.*?\)|\{.*?\}|\[.*?\]")
+alt = re.compile(u"\u2019|\u2018|\u201c|\u201d|\u2013|\u2026|\u2014|\u2026")
+
+mydict = {}
 
 # Grab the files with the docx extension
 
@@ -21,6 +25,7 @@ for i in files:
 # Read the files
 
 for i in docs:
+    print(i)
     text = ''
     doc = docx.Document('files/' + i)
     for j in doc.paragraphs:
@@ -28,9 +33,10 @@ for i in docs:
             if k.bold == None and k.italic == None and k.underline == None:
                 x = k.text
                 text += x
-    text = text.replace(u"\u2019", "").replace(u"\u2013", "").replace(u"\u2018", "")
+    text = re.sub(alt, "", text)
     text = re.sub(grp, "", text)
     text = slt.split(text)
-    newtext = [i for i in text if i != '']      
-    print(newtext)
+    newtext = [p for p in text if p != '']     
+    mydict[i] = newtext
+
 
