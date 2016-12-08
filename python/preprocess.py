@@ -25,7 +25,6 @@ for i in files:
 # Read the files
 
 for i in docs:
-    print(i)
     text = ''
     doc = docx.Document('files/' + i)
     for j in doc.paragraphs:
