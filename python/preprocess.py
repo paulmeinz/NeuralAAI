@@ -4,6 +4,7 @@ import os
 import string
 import csv
 import roget
+import copy
 
 
 files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
@@ -27,27 +28,45 @@ for i in files:
     if pat.search(i) != None:
         docs.append(i)
 
+# Initialize hash table
+
+dic = copy.deepcopy(r.num_cat)
+for i in dic.keys():
+	dic[i] = 0
+
 # Read the files
 
 for i in docs:
+    counts = copy.deepcopy(dic)
     text = ''
     doc = docx.Document('files/' + i)
     for j in doc.paragraphs:
         for k in j.runs:
             if k.bold == None and k.italic == None and k.underline == None:
                 x = k.text
-                text += x.lower()
-
-                
+                text += x.lower()            
     text = re.sub(squote, "'", text)
     text = re.sub(dquote, '''"''', text)
     text = re.sub(dash, "-", text)
     text = re.sub(elipse, "...", text)
     text = re.sub(grp, "", text)
+    text = text.encode('ascii')
     text = slt.split(text)
-    newtext = [p for p in text if p != '']     
-    mydict[i] = newtext
+    newtext = [p for p in text if p != '']
+    for k in newtext:
+        l = r.word_cat(k)
+        cats = []
+        for m in l:
+            cats.append(m[1])
+            for n in cats:
+            	if n != '0000':
+            	    counts[n] += 1
+    print(counts)
+    
 
-print(mydict[i])
+          
+    # mydict[i] = newtext
+
+
 
 
