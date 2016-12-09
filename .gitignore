@@ -1,2 +1,9 @@
 *.docx
 *files
+*roget
+*LICENSE
+*README.md
+*roget.py
+*roget.pyc
+*.txt
+

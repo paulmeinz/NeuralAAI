@@ -63,11 +63,14 @@ for i in docs:
             	    counts[n] += 1
     final = []        	    
     for o in counts.keys():
-        final.append([r.num_cat[o],counts[o]])
-    print(final)
+        final.append([r.num_cat[o],o,counts[o]])
+
+with open('testing.csv', 'wb') as csvfile:
+	writer = csv.writer(csvfile)
+	for i in final:
+		writer.writerow(i)
 
           
-    # mydict[i] = newtext
 
 
 
