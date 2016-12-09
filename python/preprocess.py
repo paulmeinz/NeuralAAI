@@ -61,8 +61,10 @@ for i in docs:
             for n in cats:
             	if n != '0000':
             	    counts[n] += 1
-    print(counts)
-    
+    final = []        	    
+    for o in counts.keys():
+        final.append([r.num_cat[o],counts[o]])
+    print(final)
 
           
     # mydict[i] = newtext
