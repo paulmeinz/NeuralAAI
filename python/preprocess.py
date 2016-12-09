@@ -3,6 +3,7 @@ import docx
 import os
 import string
 import csv
+import roget
 
 
 files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
@@ -14,6 +15,7 @@ squote = re.compile(u"\u2019|\u2018")
 dquote = re.compile(u"\u201c|\u201d")
 dash = re.compile(u"\u2013|\u2014")
 elipse = re.compile(u"\u2026")
+r = roget.Roget()
 
 mydict = {}
 
@@ -34,7 +36,9 @@ for i in docs:
         for k in j.runs:
             if k.bold == None and k.italic == None and k.underline == None:
                 x = k.text
-                text += x
+                text += x.lower()
+
+                
     text = re.sub(squote, "'", text)
     text = re.sub(dquote, '''"''', text)
     text = re.sub(dash, "-", text)
