@@ -6,9 +6,10 @@ import csv
 import roget
 import copy
 
-
+#read all files in aai directory
 files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
 
+#some reg ex for reading files and parsing text in an aai
 pat = re.compile(".doc")
 slt = re.compile('''[-&$#/~`?;:<> ,}{.-;:$&!)("]|\]|\[''')
 grp = re.compile("\(.*?\)|\{.*?\}|\[.*?\]")
@@ -16,26 +17,23 @@ squote = re.compile(u"\u2019|\u2018")
 dquote = re.compile(u"\u201c|\u201d")
 dash = re.compile(u"\u2013|\u2014")
 elipse = re.compile(u"\u2026")
+cl = re.compile("\.")
+
+#create roget object for word classification
 r = roget.Roget()
 
-mydict = {}
-
 # Grab the files with the docx extension
-
 docs = []
-
 for i in files:
     if pat.search(i) != None:
         docs.append(i)
 
 # Initialize hash table
-
 dic = copy.deepcopy(r.num_cat)
 for i in dic.keys():
 	dic[i] = 0
 
 # Read the files
-
 for i in docs:
     counts = copy.deepcopy(dic)
     text = ''
@@ -63,12 +61,10 @@ for i in docs:
             	    counts[n] += 1
     final = []        	    
     for o in counts.keys():
-        final.append([r.num_cat[o],o,counts[o]])
+    	if cl.search(o) == None:
+            final.append([r.num_cat[o],o,counts[o]])
 
-with open('testing.csv', 'wb') as csvfile:
-	writer = csv.writer(csvfile)
-	for i in final:
-		writer.writerow(i)
+
 
           
 
