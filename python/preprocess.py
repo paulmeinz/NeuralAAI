@@ -5,6 +5,8 @@ import string
 import csv
 import roget
 import copy
+from stemming.porter2 import stem
+import pandas as pd
 
 #read all files in aai directory
 files = os.listdir("/home/paul/Documents/Code/NeuralAAI/python/files/")
@@ -34,10 +36,12 @@ for i in dic.keys():
 	dic[i] = 0
 
 # Read the files
+df = True
 for i in docs:
     counts = copy.deepcopy(dic)
     text = ''
     doc = docx.Document('files/' + i)
+    name = cl.split(i)[0]
     for j in doc.paragraphs:
         for k in j.runs:
             if k.bold == None and k.italic == None and k.underline == None:
@@ -52,7 +56,8 @@ for i in docs:
     text = slt.split(text)
     newtext = [p for p in text if p != '']
     for k in newtext:
-        l = r.word_cat(k)
+    	z = stem(k)
+        l = r.word_cat(z)
         cats = []
         for m in l:
             cats.append(m[1])
@@ -62,7 +67,16 @@ for i in docs:
     final = []        	    
     for o in counts.keys():
     	if cl.search(o) == None:
-            final.append([r.num_cat[o],o,counts[o]])
+            final.append([r.num_cat[o],counts[o]])
+    if df:
+    	fd = pd.DataFrame(final, columns = ['ID',name]).set_index('ID').T
+    	df = False
+    if not df:
+    	final = pd.DataFrame(final, columns = ['ID',name]).set_index('ID').T
+    	fd = fd.append(final)
+
+
+fd.to_csv('~/Documents/testing.csv')
 
 
 
